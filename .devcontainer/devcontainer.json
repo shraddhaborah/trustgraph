@@ -1,0 +1,24 @@
+{
+  "name": "trustgraph",
+  "image": "mcr.microsoft.com/devcontainers/universal:2-linux",
+  "features": {
+    "ghcr.io/devcontainers/features/python:1": { "version": "3.12" },
+    "ghcr.io/devcontainers/features/node:1": { "version": "20" }
+  },
+  "postCreateCommand": "bash .devcontainer/setup.sh",
+  "postAttachCommand": "bash .devcontainer/run.sh",
+  "forwardPorts": [5173, 8000, 8233],
+  "portsAttributes": {
+    "5173": { "label": "TrustGraph UI", "onAutoForward": "openBrowser" },
+    "8000": { "label": "API", "onAutoForward": "silent" },
+    "8233": { "label": "Temporal UI", "onAutoForward": "silent" }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": ["ms-python.python", "dbaeumer.vscode-eslint"],
+      "settings": {
+        "python.defaultInterpreterPath": "${workspaceFolder}/backend/venv/bin/python"
+      }
+    }
+  }
+}

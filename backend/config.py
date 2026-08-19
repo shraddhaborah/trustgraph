@@ -25,6 +25,12 @@ ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
 ANTHROPIC_MODEL = os.getenv("ANTHROPIC_MODEL", "claude-sonnet-4-6")
 MAX_OUTPUT_TOKENS = int(os.getenv("MAX_OUTPUT_TOKENS", "8000"))
 
+# --- Demo mode --------------------------------------------------------------
+# When true, the extraction activity returns a fixture instead of calling Claude.
+# Lets anyone clone the repo and see the full pipeline run with no API key.
+# Auto-enables when no key is present, so the app never dies with a config error.
+DEMO_MODE = os.getenv("DEMO_MODE", "").lower() in ("1", "true", "yes") or not ANTHROPIC_API_KEY
+
 # --- Ingestion tuning -------------------------------------------------------
 # Temporal payloads are capped (~2MB per payload, 4MB gRPC message). Never put
 # raw PDF bytes in a workflow argument -- we stage the file on disk and pass a path.

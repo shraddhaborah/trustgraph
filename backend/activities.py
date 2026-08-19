@@ -176,9 +176,74 @@ def _tool_schema() -> dict:
     }
 
 
+def _demo_graph(params: ExtractParams) -> ExtractedGraph:
+    """Fixture used when DEMO_MODE is on. Exercises the entire pipeline -- workflow,
+    activity dispatch, merging, persistence, rendering -- without an API key."""
+    return ExtractedGraph(
+        trust_name="The Jane A. Doe Irrevocable Life Insurance Trust",
+        trust_type="ILIT (Irrevocable Life Insurance Trust)",
+        execution_date="March 14, 2019",
+        governing_law="State of New York",
+        nodes=[
+            {"id": "jane_a_doe", "label": "Jane A. Doe", "type": "grantor",
+             "attributes": {"role": "Settlor and insured"}},
+            {"id": "ilit", "label": "Doe ILIT", "type": "trust", "attributes": {}},
+            {"id": "first_national", "label": "First National Trust Co.", "type": "trustee",
+             "attributes": {"capacity": "Corporate trustee"}},
+            {"id": "michael_doe", "label": "Michael Doe", "type": "successor_trustee",
+             "attributes": {}},
+            {"id": "sarah_doe", "label": "Sarah Doe", "type": "beneficiary",
+             "attributes": {"relationship": "Daughter"}},
+            {"id": "thomas_doe", "label": "Thomas Doe", "type": "beneficiary",
+             "attributes": {"relationship": "Son"}},
+            {"id": "doe_foundation", "label": "Doe Family Foundation",
+             "type": "contingent_beneficiary", "attributes": {}},
+            {"id": "policy", "label": "Term Life Policy #4471-B", "type": "asset",
+             "attributes": {"face_value": "$2,000,000"}},
+        ],
+        edges=[
+            {"source": "jane_a_doe", "target": "ilit", "relationship": "settles",
+             "evidence": "Grantor hereby establishes this Trust"},
+            {"source": "first_national", "target": "ilit", "relationship": "serves_as_trustee",
+             "evidence": "shall serve as initial Trustee"},
+            {"source": "michael_doe", "target": "first_national",
+             "relationship": "succeeds_trustee", "evidence": "upon resignation of the Trustee"},
+            {"source": "ilit", "target": "sarah_doe", "relationship": "distributes_to",
+             "evidence": "in equal shares to the Grantor's children"},
+            {"source": "ilit", "target": "thomas_doe", "relationship": "distributes_to",
+             "evidence": "in equal shares to the Grantor's children"},
+            {"source": "ilit", "target": "doe_foundation", "relationship": "remainder_to",
+             "evidence": "if no issue survive"},
+            {"source": "ilit", "target": "policy", "relationship": "owns",
+             "evidence": "Trustee shall hold the Policy"},
+        ],
+        provisions=[
+            {"title": "Crummey withdrawal rights",
+             "summary": "Beneficiaries may withdraw contributions within 30 days of notice, "
+                        "qualifying gifts for the annual exclusion.",
+             "article": "IV"},
+            {"title": "Spendthrift clause",
+             "summary": "Beneficial interests cannot be assigned or reached by creditors "
+                        "before distribution.",
+             "article": "VII"},
+            {"title": "Trustee removal",
+             "summary": "A majority of adult beneficiaries may remove the corporate trustee "
+                        "and appoint a successor.",
+             "article": "IX"},
+        ],
+        input_tokens=0,
+        output_tokens=0,
+    )
+
+
 @activity.defn
 async def extract_trust_graph_activity(params: ExtractParams) -> ExtractedGraph:
     """Send one chunk of document text to Claude and get structured graph JSON back."""
+    if config.DEMO_MODE:
+        activity.logger.info("DEMO_MODE: returning fixture instead of calling Claude")
+        await asyncio.sleep(1.5)  # make the progress bar visible
+        return _demo_graph(params)
+
     client = _get_client()
 
     user_msg = (

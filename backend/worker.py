@@ -28,7 +28,10 @@ log = logging.getLogger("worker")
 
 
 async def main() -> None:
-    if not config.ANTHROPIC_API_KEY:
+    if config.DEMO_MODE:
+        log.warning("DEMO_MODE is ON -- extraction returns a fixture, Claude is not called. "
+                    "Add ANTHROPIC_API_KEY to backend/.env for real extraction.")
+    elif not config.ANTHROPIC_API_KEY:
         log.error("ANTHROPIC_API_KEY is empty. Set it in backend/.env before starting the worker.")
         raise SystemExit(1)
 

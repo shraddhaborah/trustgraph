@@ -76,6 +76,7 @@ async def health() -> dict:
         "api": "ok",
         "temporal_connected": _client is not None,
         "anthropic_key_loaded": bool(config.ANTHROPIC_API_KEY),
+        "demo_mode": config.DEMO_MODE,
         "model": config.ANTHROPIC_MODEL,
         "task_queue": config.TASK_QUEUE,
     }
