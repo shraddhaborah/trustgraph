@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { ingestPdf, type TrustGraph } from './ingest';
+import { ingestPdf, IS_DEMO, type TrustGraph } from './ingest';
 import { TrustGraphView } from './TrustGraphView';
 import './App.css';
 
@@ -50,6 +50,17 @@ export default function App() {
         <h1>TrustGraph</h1>
         <p>Extract parties, roles, and relationships from a trust instrument.</p>
       </header>
+
+      {IS_DEMO && (
+        <div className="demo-banner">
+          <strong>Demo mode.</strong> This static deploy returns a sample extraction — no
+          document leaves your browser and no model is called. The full pipeline (FastAPI,
+          Temporal, Claude) runs from the repo:{' '}
+          <a href="https://github.com/shraddhaborah/trustgraph" target="_blank" rel="noreferrer">
+            github.com/shraddhaborah/trustgraph
+          </a>
+        </div>
+      )}
 
       {phase === 'idle' && (
         <div

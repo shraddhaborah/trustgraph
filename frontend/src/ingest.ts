@@ -39,6 +39,17 @@ export interface TrustGraph {
  */
 const API_BASE = import.meta.env.VITE_API_BASE ?? '';
 
+/**
+ * Demo mode: no backend at all, extraction is a client-side fixture.
+ *
+ * Enabled explicitly with VITE_DEMO_MODE=true, or automatically in a production
+ * build with no VITE_API_BASE set -- which is exactly the static Vercel deploy.
+ * In `npm run dev` this stays off, so local work still hits the real pipeline.
+ */
+export const IS_DEMO =
+  import.meta.env.VITE_DEMO_MODE === 'true' ||
+  (import.meta.env.PROD && !import.meta.env.VITE_API_BASE);
+
 async function readError(res: Response): Promise<string> {
   try {
     const body = await res.json();
@@ -58,6 +69,11 @@ export async function ingestPdf(
   opts: { pollMs?: number; timeoutMs?: number; signal?: AbortSignal } = {},
 ): Promise<TrustGraph> {
   const { pollMs = 2000, timeoutMs = 15 * 60 * 1000, signal } = opts;
+
+  if (IS_DEMO) {
+    const { runDemoIngest } = await import('./demoData');
+    return runDemoIngest(file, onProgress);
+  }
 
   const form = new FormData();
   form.append('file', file);
