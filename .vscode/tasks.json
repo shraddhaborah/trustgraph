@@ -1,0 +1,75 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "1. Temporal Server",
+      "type": "shell",
+      "command": "temporal server start-dev",
+      "isBackground": true,
+      "presentation": {
+        "group": "trustgraph",
+        "panel": "dedicated",
+        "reveal": "always"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "2. Temporal Worker",
+      "type": "shell",
+      "command": "source venv/bin/activate && python worker.py",
+      "options": { "cwd": "${workspaceFolder}/backend" },
+      "isBackground": true,
+      "presentation": {
+        "group": "trustgraph",
+        "panel": "dedicated",
+        "reveal": "always"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "3. FastAPI",
+      "type": "shell",
+      "command": "source venv/bin/activate && fuser -k 8000/tcp 2>/dev/null; sleep 1; uvicorn main:app --reload --host 0.0.0.0 --port 8000",
+      "options": { "cwd": "${workspaceFolder}/backend" },
+      "isBackground": true,
+      "presentation": {
+        "group": "trustgraph",
+        "panel": "dedicated",
+        "reveal": "always"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "4. Vite Frontend",
+      "type": "shell",
+      "command": "npm run dev",
+      "options": { "cwd": "${workspaceFolder}/frontend" },
+      "isBackground": true,
+      "presentation": {
+        "group": "trustgraph",
+        "panel": "dedicated",
+        "reveal": "always"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Start TrustGraph (all)",
+      "dependsOn": [
+        "1. Temporal Server",
+        "2. Temporal Worker",
+        "3. FastAPI",
+        "4. Vite Frontend"
+      ],
+      "dependsOrder": "sequence",
+      "problemMatcher": [],
+      "group": { "kind": "build", "isDefault": true }
+    },
+    {
+      "label": "Health check",
+      "type": "shell",
+      "command": "curl -s localhost:8000/api/health | python3 -m json.tool",
+      "presentation": { "panel": "shared", "reveal": "always" },
+      "problemMatcher": []
+    }
+  ]
+}

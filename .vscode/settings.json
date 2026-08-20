@@ -1,0 +1,16 @@
+{
+  "python.defaultInterpreterPath": "${workspaceFolder}/backend/venv/bin/python",
+  "python.terminal.activateEnvironment": true,
+  "python.analysis.extraPaths": ["${workspaceFolder}/backend"],
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/venv": false
+  },
+  "remote.autoForwardPorts": true,
+  "remote.portsAttributes": {
+    "5173": { "label": "Vite Frontend", "onAutoForward": "openBrowser" },
+    "8000": { "label": "FastAPI", "onAutoForward": "silent" },
+    "7233": { "label": "Temporal gRPC", "onAutoForward": "silent" },
+    "8233": { "label": "Temporal UI", "onAutoForward": "notify" }
+  }
+}

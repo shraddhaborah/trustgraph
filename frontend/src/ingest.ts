@@ -33,6 +33,12 @@ export interface TrustGraph {
   };
 }
 
+/**
+ * In dev, the Vite proxy forwards /api to localhost:8000, so a relative URL works.
+ * In production there is no proxy -- set VITE_API_BASE to your deployed API origin.
+ */
+const API_BASE = import.meta.env.VITE_API_BASE ?? '';
+
 async function readError(res: Response): Promise<string> {
   try {
     const body = await res.json();
@@ -57,7 +63,7 @@ export async function ingestPdf(
   form.append('file', file);
 
   onProgress?.(0, 'uploading');
-  const start = await fetch('/api/ingest', { method: 'POST', body: form, signal });
+  const start = await fetch(`${API_BASE}/api/ingest`, { method: 'POST', body: form, signal });
   if (!start.ok) throw new Error(await readError(start));
 
   const { workflow_id: workflowId } = (await start.json()) as { workflow_id: string };
@@ -68,7 +74,7 @@ export async function ingestPdf(
     if (signal?.aborted) throw new DOMException('Ingestion cancelled', 'AbortError');
     await new Promise((r) => setTimeout(r, pollMs));
 
-    const res = await fetch(`/api/ingest/${encodeURIComponent(workflowId)}`, { signal });
+    const res = await fetch(`${API_BASE}/api/ingest/${encodeURIComponent(workflowId)}`, { signal });
     if (!res.ok) {
       // A transient proxy hiccup shouldn't abandon a workflow that's still running.
       if (res.status >= 500) continue;
