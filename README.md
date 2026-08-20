@@ -7,15 +7,15 @@
 
 <!-- Add a screenshot or GIF of the graph view here. It matters more than everything below. -->
 
-Upload a trust document, get back a graph of who's who: gr<img width="1470" height="936" alt="Screenshot 2026-08-20 at 7 16 19 PM" src="https://github.com/user-attachments/assets/07de9f18-c232-4f98-be52-1b4df1119387" />
-<img width="724" height="805" alt="Screenshot 2026-08-20 at 7 13 27 PM" src="https://github.com/user-attachments/assets/1e8485dc-f247-437c-8f74-bc79fcf3520e" />
-<img width="689" height="862" alt="Screenshot 2026-08-20 at 7 15 13 PM" src="https://github.com/user-attachments/assets/ddbeac7f-e5b1-4f9c-8234-7a3788f97d5b" />
-antors, trustees, beneficiaries, and the relationships between them. Claude does the extraction, Temporal handles the orchestration.
+
 
 This started as a project to see whether an LLM could reliably pull structured relationships out of estate planning documents. Short answer: yes, if you give it a strict schema and stop asking it to return raw JSON.
 
 <img width="718" height="693" alt="Screenshot 2026-08-20 at 7 12 32 PM" src="https://github.com/user-attachments/assets/fb84e6a5-7f48-4ccb-bce3-dbce34ce8614" />
-
+Upload a trust document, get back a graph of who's who: gr<img width="1470" height="936" alt="Screenshot 2026-08-20 at 7 16 19 PM" src="https://github.com/user-attachments/assets/07de9f18-c232-4f98-be52-1b4df1119387" />
+<img width="724" height="805" alt="Screenshot 2026-08-20 at 7 13 27 PM" src="https://github.com/user-attachments/assets/1e8485dc-f247-437c-8f74-bc79fcf3520e" />
+<img width="689" height="862" alt="Screenshot 2026-08-20 at 7 15 13 PM" src="https://github.com/user-attachments/assets/ddbeac7f-e5b1-4f9c-8234-7a3788f97d5b" />
+antors, trustees, beneficiaries, and the relationships between them. Claude does the extraction, Temporal handles the orchestration.
 
 ## How it works
 
