@@ -1,7 +1,13 @@
 # trustgraph
 **[Live demo](https://trustgraph-ruddy.vercel.app)** · sample extraction, no backend required
 
+
+https://github.com/user-attachments/assets/57d72852-dd9c-4830-8611-efb1a755bd95
+
+
+
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/shraddhaborah/trustgraph-)
+
 
 > Click the badge, wait ~2 minutes, upload the sample PDF in `backend/sample_ilit_trust.pdf`.
 > Runs in demo mode with no API key required — add one to `backend/.env` for real extraction.
